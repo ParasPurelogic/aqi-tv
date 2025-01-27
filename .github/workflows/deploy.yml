@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ${{ github.ref == 'refs/heads/production' && 'aqi-dashboard-production-runner' || 'aqi-dashboard-development-runner' }}
+    runs-on: ${{ github.ref == 'refs/heads/production' && 'aqi-tv-production-runner' || 'aqi-tv-development-runner' }}
 
     env:
       # Project-specific variables
