@@ -1,0 +1,131 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - development
+      - production
+
+jobs:
+  build-and-deploy:
+    runs-on: ${{ github.ref == 'refs/heads/production' && 'aqi-dashboard-production-runner' || 'aqi-dashboard-development-runner' }}
+
+    env:
+      # Project-specific variables
+      DEV_DOMAIN: "https://dev.aqi.in/aqi-tv"
+      PROD_DOMAIN: "https://aqi.tv"
+      DEV_BLUE_DIR: "/var/www/dev.aqi.in/html/aqi-tv/aqi-tv-blue"
+      DEV_GREEN_DIR: "/var/www/dev.aqi.in/html/aqi-tv/aqi-tv-green"
+      PROD_BLUE_DIR: "/var/www/dash.aqi.in/html/aqi-tv-blue"
+      PROD_GREEN_DIR: "/var/www/dash.aqi.in/html/aqi-tv-green"
+      BLUE_INSTANCE_NAME: "aqi-tv-blue"
+      GREEN_INSTANCE_NAME: "aqi-tv-green"
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: List all PM2 jobs
+      - name: List PM2 Jobs
+        run: pm2 list || echo 'PM2 list failed'
+
+      # Step 3: Set deployment environment based on branch
+      - name: Determine Deployment Target
+        id: deployment-target
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/production" ]]; then
+              DOMAIN="${{ env.PROD_DOMAIN }}"
+              BLUE_DIR="${{ env.PROD_BLUE_DIR }}"
+              GREEN_DIR="${{ env.PROD_GREEN_DIR }}"
+          else
+              DOMAIN="${{ env.DEV_DOMAIN }}"
+              BLUE_DIR="${{ env.DEV_BLUE_DIR }}"
+              GREEN_DIR="${{ env.DEV_GREEN_DIR }}"
+          fi
+
+          BLUE_STATUS=$(pm2 jlist | jq -r --arg NAME "${{ env.BLUE_INSTANCE_NAME }}" '.[] | select(.name == $NAME) | .pm2_env.status // "offline"')
+          GREEN_STATUS=$(pm2 jlist | jq -r --arg NAME "${{ env.GREEN_INSTANCE_NAME }}" '.[] | select(.name == $NAME) | .pm2_env.status // "offline"')
+
+          if [ "$GREEN_STATUS" == "online" ]; then
+              CURRENT_LIVE_NAME="${{ env.GREEN_INSTANCE_NAME }}"
+              DEPLOYING_TO_NAME="${{ env.BLUE_INSTANCE_NAME }}"
+              DEPLOYING_TO_DIR=$BLUE_DIR
+          elif [ "$BLUE_STATUS" == "online" ]; then
+              CURRENT_LIVE_NAME="${{ env.BLUE_INSTANCE_NAME }}"
+              DEPLOYING_TO_NAME="${{ env.GREEN_INSTANCE_NAME }}"
+              DEPLOYING_TO_DIR=$GREEN_DIR
+          else
+              CURRENT_LIVE_NAME=""
+              DEPLOYING_TO_NAME="${{ env.BLUE_INSTANCE_NAME }}"
+              DEPLOYING_TO_DIR=$BLUE_DIR
+          fi
+
+          echo "current_live_name=$CURRENT_LIVE_NAME" >> $GITHUB_ENV
+          echo "deploying_to_name=$DEPLOYING_TO_NAME" >> $GITHUB_ENV
+          echo "deploying_to_dir=$DEPLOYING_TO_DIR" >> $GITHUB_ENV
+          echo "DOMAIN=$DOMAIN" >> $GITHUB_ENV
+
+      # Step 4: Sync the latest code to the target deployment directory
+      - name: Sync Code to Target Directory
+        run: |
+          sudo rsync -a --delete ./ "${{ env.deploying_to_dir }}"
+
+      # Step 5: Setup environment and install dependencies
+      - name: Setup Environment and Install Dependencies
+        run: |
+          cd "${{ env.deploying_to_dir }}"
+
+          # Create and populate the .env file with required environment variables
+          cat <<EOF > .env
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          NEXT_PUBLIC_DOMAIN=${{ env.DOMAIN }}
+          EOF
+
+          # Install dependencies
+          npm ci || { echo 'npm ci failed' ; exit 1; }
+
+      # Step 6: Build the project in the target directory
+      - name: Build Project
+        run: |
+          cd "${{ env.deploying_to_dir }}"
+          npm run build || { echo 'Build failed' ; exit 1; }
+
+      # Step 7: Restart or start the PM2 process
+      - name: Restart PM2 Process
+        run: |
+          if pm2 show "${{ env.deploying_to_name }}" > /dev/null; then
+              pm2 restart "${{ env.deploying_to_name }}" --update-env
+          else
+              pm2 start npm --name "${{ env.deploying_to_name }}" -- run start
+          fi
+
+      # Step 8: Verify deployment
+      - name: Verify Deployment
+        run: |
+          # Wait for the new instance to be fully up and running
+          sleep 5
+          DEPLOYMENT_ONLINE=$(pm2 jlist | jq -r --arg DEPLOYING "${{ env.deploying_to_name }}" '.[] | select(.name == $DEPLOYING and .pm2_env.status == "online") | .name')
+
+          # Retry until the instance is online
+          RETRY_COUNT=0
+          MAX_RETRIES=10
+          while [[ -z "$DEPLOYMENT_ONLINE" && $RETRY_COUNT -lt $MAX_RETRIES ]]; do
+              echo "Waiting for the new instance to be ready..."
+              sleep 5
+              DEPLOYMENT_ONLINE=$(pm2 jlist | jq -r --arg DEPLOYING "${{ env.deploying_to_name }}" '.[] | select(.name == $DEPLOYING and .pm2_env.status == "online") | .name')
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+          done
+
+          if [ "$DEPLOYMENT_ONLINE" == "${{ env.deploying_to_name }}" ]; then
+              echo "Deployment successful"
+          else
+              echo "Deployment failed"
+              exit 1
+          fi
+
+      # Step 9: Stop previous live process if applicable
+      - name: Stop Previous Live Process
+        if: ${{ env.current_live_name != '' }}
+        run: |
+          pm2 stop "${{ env.current_live_name }}"
