@@ -6,19 +6,14 @@ function debouncer<T>(callback: CallbackFunction<T>, time: number): CallbackFunc
     let timer: number | null = null;
 
     return (args: T) => {
-        if (typeof window !== "undefined") {
-            if (timer) {
-                clearTimeout(timer);
-            }
-
-            timer = window.setTimeout(() => {
-                callback(args);
-                timer = null;
-            }, time);
-        } else {
-            // Handle case where `window` is not available
-            callback(args);
+        if (timer) {
+            clearTimeout(timer);
         }
+
+        timer = window.setTimeout(() => {
+            callback(args);
+            timer = null;
+        }, time);
     };
 }
 
