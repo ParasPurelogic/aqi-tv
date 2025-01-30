@@ -1,5 +1,4 @@
-import { Nunito_Sans } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import theme from "@/theme";
 import { Toaster } from "sonner";
 import NextTopLoader from "nextjs-toploader";
@@ -7,11 +6,6 @@ import { Metadata, Viewport } from "next";
 import { domainName } from "@/config/misc";
 
 export const dynamic = "force-dynamic";
-
-// Font
-const font = Nunito_Sans({ subsets: ["latin"] });
-
-//
 
 // Meta Data
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -21,7 +15,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
       default: "AQI TV",
       template: `%s | AQI TV`,
     },
-    icons: `${domainName}/favicons/favicon.ico`,
+    icons: `${domainName}/favicon.ico`,
     applicationName: "AQI TV",
     metadataBase: new URL(domainName),
   };
