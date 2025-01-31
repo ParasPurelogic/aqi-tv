@@ -12,6 +12,7 @@ import InputPhoneNumber from './_elements/InputPhoneNumber';
 import InputNumber from './_elements/InputNumber';
 import Link from './_elements/Link';
 import SearchBar from './_elements/SearchBar';
+import InputOTP from './_elements/InputOTP';
 
 export {
     Button,
@@ -28,4 +29,5 @@ export {
     InputPhoneNumber,
     InputNumber,
     InputToggle,
+    InputOTP,
 }

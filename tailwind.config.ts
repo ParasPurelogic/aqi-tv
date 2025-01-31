@@ -12,14 +12,13 @@ const config: Config = {
       colors: {
         primary: "#4BA9FF",
         para: "#677580",
-        dark_para: "#D0D2D7",
         title: "#31343D",
-        dark_title: "#F9FAFF",
-        dark_bg: "#24292E",
         error: "#f96d6d",
+        body_bg: "#ECF0F3",
       },
       spacing: {
         body: "var(--body-padding)",
+        contentHeight: "var(--page-content-height)",
         maxContainer: "1250px",
         superMax: "1400px",
         ultraMax: "1650px",

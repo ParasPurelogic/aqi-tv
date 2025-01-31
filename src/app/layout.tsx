@@ -4,6 +4,8 @@ import { Toaster } from "sonner";
 import NextTopLoader from "nextjs-toploader";
 import { Metadata, Viewport } from "next";
 import { domainName } from "@/config/misc";
+import GlobalHeader from "@/components/ui/GlobalHeader";
+import Script from "next/script";
 
 export const dynamic = "force-dynamic";
 
@@ -35,8 +37,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={theme.misc.rootFontSizes}>
       <body className={theme.misc.bodyClasses}>
+        {/* Header */}
+        <GlobalHeader />
+
         {/* Page Content  */}
-        {children}
+        <main className="h-contentHeight max-h-contentHeight w-full overflow-x-hidden overflow-y-auto">
+          <div className="main-wrapper min-h-fit w-full px-body">
+            {children}
+          </div>
+        </main>
 
         {/* Popup */}
         <div className="glb-popup" id="glb-popup"></div>
@@ -51,6 +60,16 @@ export default function RootLayout({
           showSpinner={false}
           template='<div id="top-progress-bar" class="bar" role="bar"></div>'
         />
+
+        {/* Main Script */}
+        <Script
+          id="main-script"
+          strategy="lazyOnload"
+          async={true}
+          defer={true}
+          src={`${domainName}/scripts/main.js`}
+        />
+        <Script />
       </body>
     </html>
   );

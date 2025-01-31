@@ -14,7 +14,7 @@ const Logo = (props: Props) => {
       width={50}
       height={50}
       priority
-      className={cn("site-logo w-[11.7rem] aspect-[117/55]", props.className)}
+      className={cn("site-logo w-[10rem] aspect-[117/55]", props.className)}
     />
   );
 };

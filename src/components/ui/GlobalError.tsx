@@ -46,7 +46,7 @@ export default function GlobalError({
     setIsSendingReport(false);
 
     // Show toast
-    if (!initialCall && response.status) {
+    if (response.status) {
       setIsReportSent(true);
       toast.success(response.message);
     } else {
@@ -57,7 +57,9 @@ export default function GlobalError({
   // Send Report on pressing "Enter Key"
   useEffect(() => {
     // Call handleSendReport
-    handleSendReport(true);
+    if (!error?.message?.toLowerCase()?.includes("loading chunk")) {
+      handleSendReport(true);
+    }
 
     //
     try {

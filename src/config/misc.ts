@@ -12,9 +12,10 @@ export const conventions = {
 
 // REGEX CHECKS
 export const regexChecks = {
+  email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  password: /.{6,}/,
   phoneNumber: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
-  email: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
-  string: /^.*$/,
+  simpleStringCheck: /^.*$/,
 }
 
 // Domain name
@@ -27,7 +28,7 @@ export const isSiteLive = domainName?.includes?.("aqi.tv");
 export const getCookieConfig = () => ({
   httpOnly: true,
   sameSite: "strict" as const,
-  domain: process.env.NODE_ENV === "production" ? "aqi.tv" : undefined,
+  domain: process.env.NODE_ENV === "production" ? ".aqi" : undefined,
   expires: conventions.cookie.getCookieLife(),
   secure: process.env.NODE_ENV === "production",
 });
