@@ -16,7 +16,7 @@ import SignupForm from "./SignupForm";
 const Index = () => {
   // Current Screen
   const [currentScreen, setCurrentScreen] = useState(
-    "verify-email" as "sign-up" | "verify-email"
+    "sign-up" as "sign-up" | "verify-email"
   );
 
   // User Creds
