@@ -2,24 +2,26 @@
 
 import logMeOut from "@/actions/logMeOut";
 import { Button } from "@/components/elements";
+import IconLoader from "@/components/misc/IconLoader";
+import ShowLoader from "@/components/ui/ShowLoader";
 import { routes } from "@/config/routes";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const LogoutButton = () => {
-  // Msg. State
-  const [msg, setMsg] = useState("");
+  // isLogging out State
+  const [isLoginOut, setIsLoginOut] = useState(false);
 
   // Function to logout
   const logout = async () => {
     // If logging out
-    if (msg) {
+    if (isLoginOut) {
       return;
     }
     // Logout user
     try {
-      // Update msg
-      setMsg("Logging out...");
+      // Update state
+      setIsLoginOut(true);
 
       // Logout
       const response = await logMeOut();
@@ -36,7 +38,7 @@ const LogoutButton = () => {
       //
     } catch (error: any) {
       toast.error(error?.message);
-      setMsg("");
+      setIsLoginOut(false);
     }
   };
 
@@ -45,10 +47,12 @@ const LogoutButton = () => {
     <div className="text-error w-full border-t border-[#DFE1EA] mt-auto">
       <Button
         onClick={logout}
-        disabled={!!msg}
-        className="text-current bg-transparent !rounded-[0] w-full py-[2.5em]"
+        disabled={isLoginOut}
+        className="text-current bg-transparent !rounded-[0] w-full py-[2.5em] border-0"
       >
-        {msg || (
+        {isLoginOut ? (
+          <IconLoader />
+        ) : (
           <>
             <span>Logout</span>
             <svg
@@ -69,6 +73,9 @@ const LogoutButton = () => {
           </>
         )}
       </Button>
+
+      {/* If Login out */}
+      {isLoginOut && <ShowLoader fullScreen />}
     </div>
   );
 };

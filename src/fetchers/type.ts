@@ -1,3 +1,15 @@
+// FNGetAllScreens
+export type FNGetAllScreens = Partial<
+    {
+        id: number
+        user_id: number
+        serialNo: string
+        ScreenName: string
+        created_at: string
+        updated_at: string
+        isOnline: 0 | 1
+    }
+>[]
 
 // FNUserProfileDetails
 export type FNUserProfileDetails = {

@@ -23,7 +23,7 @@ const ShowUnexpectedError = (props: Props) => {
           {/* Desc */}
           <p>
             <span>Error: </span>
-            <span className="text-[#c26768]">
+            <span className="text-error">
               {props?.error ||
                 "Sorry for the inconvenience, something Unexpected Happened."}
             </span>
@@ -32,7 +32,7 @@ const ShowUnexpectedError = (props: Props) => {
           <div className="actions flex flex-wrap items-center gap-[1.5rem] max-w-[250px] min-w-fit mt-[1rem] mx-auto">
             {/* Back Home */}
             <a
-              href={routes.home.url}
+              href={routes.screens.url}
               aria-label="Back Home"
               className="flex-1 w-full min-w-[15rem]"
             >

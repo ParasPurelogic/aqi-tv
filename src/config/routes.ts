@@ -22,6 +22,20 @@ export const routes = {
         pathname: "/auth/signup",
         url: `${domainName}/auth/signup`
     },
+    // Manage Screens
+    screens: {
+        id: "screens",
+        name: "Manage Screens",
+        pathname: "/screens",
+        url: `${domainName}/screens`
+    },
+    // Single Screen
+    singleScreen: {
+        id: "singleScreen",
+        name: "Single Screen Details",
+        pathname: "/screens/screenId",
+        url: `${domainName}/screens/screenId`
+    },
     // Playlist
     playlist: {
         id: "playlist",

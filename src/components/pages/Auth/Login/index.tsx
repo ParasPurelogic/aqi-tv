@@ -31,8 +31,8 @@ const Index = () => {
 
       // If logged in
       if (status?.status && typeof window !== "undefined") {
-        // Redirect to home/from page
-        window.location.href = routes.home.url;
+        // Redirect to screens page
+        window.location.href = routes.screens.url;
       }
       // If not logged in
       else {

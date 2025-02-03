@@ -115,7 +115,7 @@ export default function GlobalError({
 
               {/* Back Home */}
               <a
-                href={routes.home.url}
+                href={routes.screens.url}
                 aria-label="Back Home"
                 className="flex-1 w-full min-w-[15rem]"
               >

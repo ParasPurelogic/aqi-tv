@@ -2,10 +2,10 @@ import { Button } from "@/components/elements";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "All Screens",
+  title: "Manage Account",
 };
 
 export default function Page() {
   // Return JSX
-  return <Button>Home</Button>;
+  return <Button>Manage Account</Button>;
 }

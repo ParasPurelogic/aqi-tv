@@ -27,6 +27,7 @@ type Props = {
 const DropDownSelector = (props: Props) => {
   // Create a reference of the component
   const parentRef = useRef(null);
+
   // Selected Option Ref
   const selectedOptionRef = useRef<HTMLLIElement>(null);
 
@@ -57,10 +58,7 @@ const DropDownSelector = (props: Props) => {
   return (
     <div
       ref={parentRef}
-      className={cn(
-        "drop-down-selector text-title dark:text-dark_title",
-        props.className
-      )}
+      className={cn("drop-down-selector text-title", props.className)}
     >
       <div className="wrapper relative select-none h-full">
         {/* Dropdown Handler */}
@@ -79,7 +77,7 @@ const DropDownSelector = (props: Props) => {
             // If pickerComp is not provided
             <div
               className={cn(
-                "handler h-full rounded-[1rem] flex items-center justify-between gap-[1rem] leading-[1] px-[1.4em] py-[1em] text-[1.5rem] border bg-[#F7F7FC] border-[#CECECE] dark:bg-dark_bg dark:border-[#CECECE]/[0.28]",
+                "handler h-full rounded-[1rem] flex items-center justify-between gap-[1rem] leading-[1] px-[1.4em] py-[1em] text-[1.5rem] border border-[#CECECE]/[50]",
                 props.disableSelection &&
                   "opacity-50 pointer-events-none cursor-not-allowed"
               )}
@@ -118,7 +116,7 @@ const DropDownSelector = (props: Props) => {
 
         {/* Dropdown Options */}
         {flags?.showDropDown && !props.disableSelection && (
-          <div className="drop-down-options absolute -bottom-[1rem] right-0 translate-y-full border-l-[1.3rem] border-r-[0.8rem] border-y-[1.3rem] pr-[0.5rem] border-transparent flex flex-col bg-white/70 dark:bg-dark_bg/70 backdrop-blur-[35px] h-fit max-h-[50vh] w-[20rem] overflow-auto shadow-[0px_8px_28px_0px_rgba(0,0,0,0.12)] dark:shadow-[0px_8px_28px_0px_rgba(0,0,0,0.4)] rounded-[1.4rem] text-[1.4rem] leading-[1] [--scrollbarWidth:0.5rem] z-[10]">
+          <div className="drop-down-options absolute -bottom-[1rem] right-0 translate-y-full border-l-[1.3rem] border-r-[0.8rem] border-y-[1.3rem] pr-[0.5rem] border-transparent flex flex-col bg-white/70 backdrop-blur-[35px] h-fit max-h-[50vh] w-[20rem] overflow-auto shadow-[0px_8px_28px_0px_rgba(0,0,0,0.12)] rounded-[1.4rem] text-[1.4rem] leading-[1] [--scrollbarWidth:0.5rem] z-[10]">
             {/* Render a Search Bar */}
             {props.showSearchBar && (
               <SearchBar
@@ -146,11 +144,8 @@ const DropDownSelector = (props: Props) => {
                     onClick={() =>
                       setFlags((prev) => {
                         // Run props.onSelect
-                        if (
-                          option.id != flags?.selectedOption?.id &&
-                          props.onSelect
-                        ) {
-                          props.onSelect(option);
+                        if (option.id != flags?.selectedOption?.id) {
+                          props?.onSelect?.(option);
                         }
 
                         // Return
@@ -164,7 +159,7 @@ const DropDownSelector = (props: Props) => {
                     }
                     key={option.id}
                     className={cn(
-                      "cursor-pointer relative leading-[120%] transition hover:bg-black/5 dark:hover:bg-white/5 hover:rounded-[1rem] border-t border-[#343B3E]/10 dark:border-dark_title/10 first:border-t-0",
+                      "cursor-pointer relative leading-[120%] transition hover:bg-black/5 hover:rounded-[1rem] border-t border-[#343B3E]/10 first:border-t-0",
                       !option.customComp && "p-[1.4rem]",
                       flags?.searchedTerm &&
                         !option?.name

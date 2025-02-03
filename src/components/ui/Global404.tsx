@@ -50,7 +50,7 @@ export default function NotFound() {
             <div className="actions flex flex-wrap items-center gap-[1.5rem] w-full max-w-[250px] min-w-fit mt-[1rem] mx-auto">
               {/* Back Home */}
               <a
-                href={routes.home.url}
+                href={routes.screens.url}
                 aria-label="Back Home"
                 className="flex-1 w-full min-w-[15rem]"
               >

@@ -70,7 +70,7 @@ const SignupForm = (props: Props) => {
 
           // Redirect User
           if (typeof window != "undefined") {
-            window.location.href = routes.home.url;
+            window.location.href = routes.screens.url;
           }
         }
       }

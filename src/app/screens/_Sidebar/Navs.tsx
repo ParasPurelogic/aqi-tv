@@ -12,8 +12,7 @@ const Navs = () => {
   // Navs
   const navs = [
     {
-      ...routes.home,
-      name: "All Screens",
+      ...routes.screens,
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +32,6 @@ const Navs = () => {
     },
     {
       ...routes.myAccount,
-      name: "Manage Account",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -69,14 +67,14 @@ const Navs = () => {
 
   // Return JSX
   return (
-    <div className="[&_.op]:p-[2.5rem_5rem]">
+    <div className="[&_>_.op]:p-[2.5rem_5rem]">
       {/* Title */}
       <span className="op block">OPTIONS</span>
 
       {/* Navs */}
       {navs.map((nav) => {
         // is current
-        const isCurrentPath = pathName == nav.pathname;
+        const isCurrentPath = pathName.includes(nav.pathname);
 
         // Return Nav
         return (

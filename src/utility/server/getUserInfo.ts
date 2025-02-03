@@ -1,6 +1,7 @@
 import { conventions } from "@/config/misc";
 import { TypeUserInfo } from "@/types/misc";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 const getUserInfo = async (): Promise<TypeUserInfo | undefined> => {
     try {
@@ -71,4 +72,4 @@ function isValidUserInfo(payload: any): payload is TypeUserInfo {
     return payload && typeof payload === "object" && "id" in payload && "token" in payload;
 }
 
-export default getUserInfo;
+export default cache(getUserInfo)

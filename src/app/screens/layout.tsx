@@ -13,7 +13,7 @@ export default async function RootLayout({
         <Sidebar />
 
         {/* Content */}
-        <div className="p-body">{children}</div>
+        <div className="p-body min-h-[55rem]">{children}</div>
       </div>
     </div>
   );

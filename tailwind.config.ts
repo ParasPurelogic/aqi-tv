@@ -14,6 +14,7 @@ const config: Config = {
         para: "#677580",
         title: "#31343D",
         error: "#f96d6d",
+        success: "#4FC667",
         body_bg: "#ECF0F3",
       },
       spacing: {

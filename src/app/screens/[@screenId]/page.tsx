@@ -6,10 +6,10 @@ export const metadata: Metadata = {
 };
 
 export default async function Page(props: {
-  params: Promise<{ screenId: string }>;
+  params: Promise<{ "@screenId": string }>;
 }) {
   // Screen ID
-  const screenId = (await props.params).screenId;
+  const screenId = (await props.params)["@screenId"];
   // Return JSX
   return <Button>Screen Details screenId:{screenId}</Button>;
 }
