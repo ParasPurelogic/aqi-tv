@@ -33,8 +33,6 @@ const SearchBar = (props: Props) => {
   // eslint-disable-next-line
   const debouncedSearch = useCallback(
     debouncer((term: string) => handleSearch(term), 500),
-
-    // eslint-disable-next-line
     [handleSearch]
   );
 
