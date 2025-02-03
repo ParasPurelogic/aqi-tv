@@ -1,6 +1,11 @@
 "use client";
 
-import React, { forwardRef, InputHTMLAttributes } from "react";
+import React, {
+  forwardRef,
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+} from "react";
 import theme from "@/theme";
 import cn from "@/utility/cn";
 import generateRandomString from "@/utility/generateRandomString";
@@ -12,9 +17,18 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const InputCheckbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
+  // Extract Props
   const { className, inputClassName, labelText, ...otherProps } = props;
-  const checkboxId = generateRandomString();
+  // ID State
+  const [id, setId] = useState("");
+  useEffect(() => {
+    setId(generateRandomString());
+  }, []);
+  if (!id) {
+    return null;
+  }
 
+  // Return JSX
   return (
     <div
       className={cn(
@@ -25,7 +39,7 @@ const InputCheckbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
       {/* Input */}
       <input
         type="checkbox"
-        id={checkboxId}
+        id={id}
         ref={ref}
         className={cn(
           `${theme.input.commonStyling}`,
@@ -39,7 +53,7 @@ const InputCheckbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
       {labelText && (
         <label
           className="cursor-pointer truncate leading-[1] grow"
-          htmlFor={checkboxId}
+          htmlFor={id}
         >
           {labelText}
         </label>

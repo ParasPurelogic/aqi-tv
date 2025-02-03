@@ -18,7 +18,7 @@ const setUserInfoCookie = async (args: Args): Promise<TypeAction<TypeUserInfo>> 
         let userData: TypeUserInfo = args.userInfo ?? {};
 
         // Fetch user details, if user data not present
-        if (!userData) {
+        if (!userData?.email) {
             await profileDetails({
                 options: {
                     token: args.userToken
@@ -42,7 +42,7 @@ const setUserInfoCookie = async (args: Args): Promise<TypeAction<TypeUserInfo>> 
         }
 
         // If user details provided in arg
-        if (args.userInfo) {
+        else if (args.userInfo) {
             let error = "";
 
             // Refresh user session
@@ -66,7 +66,7 @@ const setUserInfoCookie = async (args: Args): Promise<TypeAction<TypeUserInfo>> 
         }
 
         // If user data not found
-        if (!userData) {
+        if (!userData?.id) {
             throw new Error("User not found");
         }
 
