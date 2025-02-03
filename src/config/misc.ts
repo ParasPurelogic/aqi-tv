@@ -28,7 +28,7 @@ export const isSiteLive = domainName?.includes?.("aqi.tv");
 export const getCookieConfig = () => ({
   httpOnly: true,
   sameSite: "strict" as const,
-  domain: process.env.NODE_ENV === "production" ? ".aqi" : undefined,
+  domain: process.env.NODE_ENV === "production" ? isSiteLive ? ".aqi.tv" : ".aqi.in" : undefined,
   expires: conventions.cookie.getCookieLife(),
   secure: process.env.NODE_ENV === "production",
 });

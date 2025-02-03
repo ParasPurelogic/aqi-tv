@@ -28,11 +28,9 @@ const getUserInfo = async (): Promise<TypeUserInfo | undefined> => {
         const payloadObj: TypeUserInfo = JSON.parse(decodedPayload);
 
         // Validate the parsed payload
-        // if (!isValidUserInfo(payloadObj)) {
-        //     throw new Error("Invalid user info payload.");
-        // }
-
-        console.log({ payloadObj })
+        if (!isValidUserInfo(payloadObj)) {
+            throw new Error("Invalid user info payload.");
+        }
 
         // Return the parsed payload
         return payloadObj;
