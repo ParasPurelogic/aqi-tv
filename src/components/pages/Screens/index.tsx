@@ -397,7 +397,7 @@ const Index = (props: Props) => {
                 )}
               >
                 {/* Name */}
-                <div className="max-sm:w-full flex flex-col self-center gap-[0.6rem]">
+                <div className="max-sm:w-full flex flex-col-reverse sm:flex-col self-center gap-[0.6rem]">
                   {/* Name */}
                   <span className="sm:text-[2rem] text-title">
                     {screen?.ScreenName ?? "N/A"}
@@ -426,8 +426,10 @@ const Index = (props: Props) => {
 
                 {/* Serial Number */}
                 <div className="flex flex-col self-center">
-                  <span className="text-[1.1rem]">Serial Number</span>
-                  <span className="text-title uppercase">
+                  <span className="text-[1.1rem] max-sm:hidden">
+                    Serial Number
+                  </span>
+                  <span className="max-sm:text-[1.5rem] max-sm:leading-[1] sm:text-title uppercase">
                     {screen?.serialNo ?? "N/A"}
                   </span>
                 </div>
