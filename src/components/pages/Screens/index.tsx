@@ -382,7 +382,7 @@ const Index = (props: Props) => {
                   String(screen?.serialNo + "-" + screen?.id)
                 )}
                 className={cn(
-                  "border rounded-[1.5rem] overflow-hidden border-black/[16%] flex flex-wrap sm:grid grid-cols-[minmax(15rem,1fr)_2px_10rem_auto] md:grid-cols-[30rem_5rem_20rem_auto] gap-[1.2rem_1.5rem] sm:gap-[1.5rem_3rem] max-sm:p-[1.5rem_2rem] sm:pl-[3rem] md:pl-[5rem] w-full transition hover:border-primary hover:bg-primary/10 leading-[130%]",
+                  "relative border rounded-[1.5rem] overflow-hidden border-black/[16%] flex flex-wrap sm:grid grid-cols-[minmax(15rem,1fr)_2px_10rem_auto] md:grid-cols-[30rem_5rem_20rem_auto] gap-[1.2rem_1.5rem] sm:gap-[1.5rem_3rem] max-sm:p-[1.5rem_2rem] sm:pl-[3rem] md:pl-[5rem] w-full transition hover:border-primary hover:bg-primary/10 leading-[130%]",
                   flags.searchedTerm &&
                     !`${screen.ScreenName} ${screen.serialNo} ${screen.created_at}`
                       ?.toLowerCase()
@@ -433,7 +433,7 @@ const Index = (props: Props) => {
                 </div>
 
                 {/* Link Button */}
-                <div className="max-sm:hidden flex items-center justify-center p-[2.8rem_1.5rem] h-full w-[10rem] ml-auto bg-[#F2F5FF]">
+                <div className="max-sm:absolute max-sm:top-0 max-sm:right-0 flex items-center justify-center p-[2rem] sm:p-[2.8rem_1.5rem] h-full sm:w-[10rem] ml-auto bg-[#F2F5FF]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="aspect-[10/17] w-[1.2rem]"

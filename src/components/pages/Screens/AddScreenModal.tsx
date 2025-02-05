@@ -112,7 +112,7 @@ const AddScreenModal = (props: Props) => {
       </div>
 
       {/* Preview */}
-      <div className="max-sm:hidden flex flex-col items-center gap-[3rem] w-[25rem] mt-[3rem]">
+      <div className="flex flex-col items-center gap-[3rem] w-[25rem] mt-[3rem] mx-auto">
         {/* Image */}
         <Image
           src={`${domainName}/media/misc/screen-preview.jpg`}
@@ -128,7 +128,7 @@ const AddScreenModal = (props: Props) => {
       </div>
 
       {/* Form */}
-      <div className="flex flex-col h-full gap-[2.5rem] sm:border-l p-[3rem_0] sm:p-[3rem_0_0_3rem] sm:ml-[3rem]">
+      <div className="flex flex-col h-full gap-[2.5rem] sm:border-l p-[3rem_0_2rem] sm:p-[3rem_0_0_3rem] sm:ml-[3rem]">
         {/* Name Field */}
         <InputText
           disabled={isSaving}
@@ -150,7 +150,7 @@ const AddScreenModal = (props: Props) => {
         />
 
         {/* Actions */}
-        <div className="max-sm:w-full flex flex-wrap gap-[1.5rem] justify-end pt-[10rem] mt-auto">
+        <div className="max-sm:w-full flex flex-wrap gap-[1.5rem] justify-end pt-[5rem] md:pt-[10rem] mt-auto">
           {/* Cancel */}
           <Button
             disabled={isSaving}
