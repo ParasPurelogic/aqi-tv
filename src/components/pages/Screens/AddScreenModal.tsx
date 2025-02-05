@@ -67,7 +67,7 @@ const AddScreenModal = (props: Props) => {
       props?.onSuccess(
         (newScreens ?? []).map((s) => ({
           ...s,
-          isNew: s.serialNo == info.serialNo,
+          isNew: !props.screen && s.serialNo == info.serialNo,
         }))
       );
 
@@ -94,7 +94,7 @@ const AddScreenModal = (props: Props) => {
     <Popup
       fitWrapperHeight
       className="p-0"
-      wrapperClassName="sm:max-w-[600px] lg:max-w-[900px]"
+      wrapperClassName="sm:max-w-[600px] lg:max-w-[750px] 2xl:max-w-[900px]"
       contentClassName="grid sm:grid-cols-[auto_1fr]"
     >
       {/* Header */}
@@ -161,7 +161,7 @@ const AddScreenModal = (props: Props) => {
           </Button>
           {/* Add/Remove */}
           <Button
-            disabled={!screenInfo.name || !screenInfo.serialNo}
+            disabled={!screenInfo.name || !screenInfo.serialNo || isSaving}
             className="max-sm:flex-1  min-w-[15rem]"
             onClick={() => handleSubmit(screenInfo)}
           >

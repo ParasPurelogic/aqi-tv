@@ -134,8 +134,10 @@ const Index = (props: Props) => {
         {/* Search */}
         <SearchBar
           className="border-[0_0_1px_0] !border-b !rounded-[0] focus-within:shadow-none pb-[1em]"
-          onSearch={(term) => setFlags({ ...flags, searchedTerm: term })}
-          onClear={() => setFlags({ ...flags, searchedTerm: "" })}
+          onSearch={(term) =>
+            setFlags((prev) => ({ ...prev, searchedTerm: term }))
+          }
+          onClear={() => setFlags((prev) => ({ ...prev, searchedTerm: "" }))}
           placeholder="Search by name, serial no. or date added."
         />
 
@@ -234,6 +236,7 @@ const Index = (props: Props) => {
 
         {/* Filter */}
         <DropDownSelector
+          disableSelection={screens.length == 0}
           options={filters}
           pickerComp={() => (
             <div className="aspect-[25/23] min-w-[2.3rem] max-w-[2.3rem] relative">
@@ -477,7 +480,7 @@ const Index = (props: Props) => {
         })}
       </div>
 
-      {/* Add Screen Modal */}
+      {/* Add/Update Screen Modal */}
       {flags.showAddScreenModal && (
         <AddScreenModal
           onClose={() =>
