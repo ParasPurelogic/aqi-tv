@@ -10,7 +10,7 @@ const BackBtn = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="transition aspect-square w-[3.5rem] hover:opacity-70 cursor-pointer"
+      className="transition aspect-square w-[3.5rem] h-fit hover:opacity-70 cursor-pointer"
       fill="none"
       viewBox="0 0 39 39"
       onClick={() => router.back()}

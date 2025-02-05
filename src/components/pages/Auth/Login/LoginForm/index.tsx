@@ -143,7 +143,7 @@ const LoginForm = (props: Props) => {
       {/* Misc Actions */}
       <div
         className={cn(
-          "misc-actions flex items-center flex-wrap justify-between w-full text-primary text-[1.3rem] md:text-[1.5rem] mt-[2rem] mb-[3.4rem] md:mt-[2.3rem] md:mb-[3.7rem]",
+          "misc-actions flex items-center flex-wrap justify-between w-full text-[1.3rem] md:text-[1.5rem] mt-[2rem] mb-[3.4rem] md:mt-[2.3rem] md:mb-[3.7rem]",
           (isSubmitting || !!loggedInMsg) && "pointer-events-none opacity-70"
         )}
       >
@@ -152,7 +152,7 @@ const LoginForm = (props: Props) => {
 
         {/* Forget Password */}
         <span
-          className="cursor-pointer text-right"
+          className="cursor-pointer text-right text-primary"
           onClick={() =>
             !isSubmitting &&
             !loggedInMsg &&
