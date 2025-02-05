@@ -48,7 +48,7 @@ const LogoutButton = () => {
       <Button
         onClick={logout}
         disabled={isLoginOut}
-        className="text-current bg-transparent !rounded-[0] w-full py-[2.5em] border-0"
+        className="text-current bg-transparent !rounded-[0] w-full py-[1.5rem] sm:py-[2.5em] border-0"
       >
         {isLoginOut ? (
           <IconLoader />

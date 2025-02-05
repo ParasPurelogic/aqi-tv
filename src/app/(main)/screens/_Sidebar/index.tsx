@@ -10,7 +10,7 @@ const index = async () => {
 
   // Return JSX
   return (
-    <div className="w-full bg-[#F2F5FF] h-full flex flex-col gap-[1rem]">
+    <div className="w-full bg-[#F2F5FF] h-full flex flex-col gap-[1rem] max-sm:hidden">
       {/* User Profile */}
       <div className="nav-user-detail flex gap-[1.2rem] items-center overflow-x-hidden p-[var(--body-padding)_var(--body-padding)_2.5rem] border-b border-[#DFE1EA]">
         {/* User Profile Pic */}

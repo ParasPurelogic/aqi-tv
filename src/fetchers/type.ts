@@ -1,3 +1,20 @@
+// FNGetSingleScreen
+export type FNGetSingleScreen = Partial<FNGetAllScreens[0] & {
+    playlists: Partial<{
+        id: number
+        user_id: number
+        name: string
+        created_at: string
+        updated_at: string
+        slides_json: { slide_no: number }[]
+        assign_tvscreens: Partial<{
+            screen_serialNo: string
+            screen_id: number
+            screen_name: string
+        }>[]
+    }>[]
+}>
+
 // FNGetAllScreens
 export type FNGetAllScreens = Partial<
     {

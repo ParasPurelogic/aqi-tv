@@ -64,7 +64,7 @@ const Popup = (props: PopupProps) => {
         {/* Content */}
         <div
           className={cn(
-            "content w-full h-[20%] grow bg-white dark:bg-[#21262b] border-[2rem] border-t-[3rem] border-r-[1rem] p-[1rem] pt-0 pr-[1.5rem] sm:border-x-[2rem] sm:px-[2rem] sm:border-y-[3rem] rounded-[1.6rem] border-white dark:border-[#21262b] shadow-[4px_7px_37px_0px_rgba(69,69,69,0.06)] overflow-y-auto",
+            "content w-full h-[20%] grow bg-white border-[2rem] border-t-[3rem] border-r-[1rem] p-[1rem] pt-0 pr-[1.5rem] sm:border-x-[2rem] sm:px-[2rem] sm:border-y-[3rem] rounded-[1.6rem] border-white shadow-[4px_7px_37px_0px_rgba(69,69,69,0.06)] overflow-y-auto",
             props.contentClassName
           )}
         >
@@ -87,17 +87,20 @@ const Popup = (props: PopupProps) => {
 function CloseButton({
   className,
   onClose,
+  disabled,
 }: {
   className?: string;
   onClose?: () => void;
+  disabled?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "close-button relative cursor-pointer transition hover:bg-zinc-200 dark:hover:bg-zinc-700 bg-white dark:bg-dark_bg aspect-square ml-auto w-[3rem] h-[3rem] rounded-full flex items-center justify-center text-title dark:text-dark_title",
-        className
+        "close-button relative cursor-pointer transition hover:bg-zinc-200 bg-white aspect-square ml-auto w-[3rem] h-[3rem] rounded-full flex items-center justify-center text-title",
+        className,
+        disabled && "pointer-events-nonecursor-not-allowed"
       )}
-      onClick={() => onClose && onClose()}
+      onClick={() => !disabled && onClose?.()}
     >
       <svg
         className="absolute aspect-square w-[40%] top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4"

@@ -8,15 +8,13 @@ type Args = {
     onFinally?: () => void
     options: {
         token: string
+        screenName: string
+        screenSerialNo: string
+        userId: number
     }
 }
 
 type API = {
-    request: {
-        headers: {
-            authorization: `bearer ${string}`
-        }
-    }
     response: {
         status: number
         message: string
@@ -24,19 +22,25 @@ type API = {
     }
 }
 
-const getAllScreens = async (args: Args): Promise<FNGetAllScreens | undefined> => {
+const addScreen = async (args: Args): Promise<FNGetAllScreens | undefined> => {
     try {
         // Run onFetching FN
         args?.onFetching?.();
 
-        // Prepare header
-        const headers: API["request"]["headers"] = {
-            authorization: `bearer ${args.options?.token ?? ""}`,
-        }
+        // Form Data
+        const formData = new URLSearchParams();
+        formData.append('ScreenName', args?.options?.screenName);
+        formData.append('serialNo', args?.options?.screenSerialNo);
+        formData.append('user_id', String(args?.options?.userId));
 
         // Make API call to server
-        const request = await fetch("https://airquality.aqi.in/api/v1/aqi-cloud-tv/GetAllTvScreenList", {
-            headers: headers,
+        const request = await fetch("https://airquality.aqi.in/api/v1/aqi-cloud-tv/AddTvScreen", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                authorization: `bearer ${args?.options?.token}`
+            },
+            body: formData.toString(),
             cache: "no-store"
         });
 
@@ -46,8 +50,8 @@ const getAllScreens = async (args: Args): Promise<FNGetAllScreens | undefined> =
         // If  data received
         if (response.data != null) {
             // Return response
-            args?.onSuccess?.(response.data)
-            return response.data
+            args?.onSuccess?.(response?.data?.reverse())
+            return response?.data?.reverse()
         }
         // Else
         throw new Error(response.message)
@@ -59,4 +63,4 @@ const getAllScreens = async (args: Args): Promise<FNGetAllScreens | undefined> =
     }
 }
 
-export default getAllScreens
+export default addScreen
