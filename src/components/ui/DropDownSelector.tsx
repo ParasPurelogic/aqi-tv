@@ -63,25 +63,19 @@ const DropDownSelector = (props: Props) => {
       <div className="wrapper relative select-none h-full">
         {/* Dropdown Handler */}
         <div
-          className="handler cursor-pointer h-full"
+          className={cn(
+            "handler cursor-pointer h-full",
+            props.disableSelection &&
+              "opacity-50 pointer-events-none cursor-not-allowed"
+          )}
           title={props.pickerText ?? flags?.selectedOption?.name ?? "Select"}
           onClick={() =>
             !props.disableSelection &&
             setFlags((prev) => ({ ...prev, showDropDown: !prev.showDropDown }))
           }
         >
-          {props.pickerComp ? (
-            // If pickerComp is provided
-            props.pickerComp(flags?.selectedOption)
-          ) : (
-            // If pickerComp is not provided
-            <div
-              className={cn(
-                "handler h-full rounded-[1rem] flex items-center justify-between gap-[1rem] leading-[1] px-[1.4em] py-[1em] text-[1.5rem] border border-[#CECECE]/[50]",
-                props.disableSelection &&
-                  "opacity-50 pointer-events-none cursor-not-allowed"
-              )}
-            >
+          {props?.pickerComp?.(flags?.selectedOption) || (
+            <div className="handler h-full rounded-[1rem] flex items-center justify-between gap-[1rem] leading-[1] px-[1.4em] py-[1em] text-[1.5rem] border border-[#CECECE]/[50]">
               {/* Heading */}
               <div className="heading line-clamp-1 leading-[1] font-semibold">
                 {props.pickerText ?? flags?.selectedOption?.name ?? "Select"}

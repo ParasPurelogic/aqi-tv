@@ -133,6 +133,7 @@ const Index = (props: Props) => {
       <div className="flex w-full items-center">
         {/* Search */}
         <SearchBar
+          disabled={screens?.length == 0}
           className="border-[0_0_1px_0] !border-b !rounded-[0] focus-within:shadow-none pb-[1em]"
           onSearch={(term) =>
             setFlags((prev) => ({ ...prev, searchedTerm: term }))

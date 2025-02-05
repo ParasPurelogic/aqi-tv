@@ -13,6 +13,7 @@ type Props = {
   onClear?: () => void;
   inputRef?: React.RefObject<HTMLInputElement>;
   autoFocus?: boolean;
+  disabled?: boolean;
 };
 
 const SearchBar = (props: Props) => {
@@ -62,6 +63,7 @@ const SearchBar = (props: Props) => {
       </i>
       {/* Input */}
       <input
+        disabled={props.disabled}
         autoFocus={props.autoFocus}
         type="search"
         className={cn(
