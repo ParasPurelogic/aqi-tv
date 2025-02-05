@@ -32,7 +32,7 @@ const InputCheckbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
   return (
     <div
       className={cn(
-        "input-checkbox relative flex items-center gap-[0.8rem] cursor-pointer font-semibold w-[2rem] h-[2rem]",
+        "input-checkbox relative flex items-center gap-[0.8rem] cursor-pointer font-semibold",
         className
       )}
     >
@@ -43,7 +43,7 @@ const InputCheckbox = forwardRef<HTMLInputElement, Props>((props, ref) => {
         ref={ref}
         className={cn(
           `${theme.input.commonStyling}`,
-          "w-full h-full cursor-pointer",
+          "cursor-pointer w-[2rem] h-[2rem]",
           inputClassName
         )}
         {...otherProps}

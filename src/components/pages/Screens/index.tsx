@@ -354,7 +354,7 @@ const Index = (props: Props) => {
               {/* Checkbox */}
               {Array.isArray(flags.selectedScreens) && (
                 <InputCheckbox
-                  className="w-[2.5rem] h-[2.5rem]"
+                  className="[&_input]:w-[2.5rem] [&_input]:h-[2.5rem]"
                   onChange={(e) => {
                     setFlags((prev) => ({
                       ...prev,
