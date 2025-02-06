@@ -161,7 +161,12 @@ const AddScreenModal = (props: Props) => {
           </Button>
           {/* Add/Remove */}
           <Button
-            disabled={!screenInfo.name || !screenInfo.serialNo || isSaving}
+            disabled={
+              !screenInfo.name ||
+              !screenInfo.serialNo ||
+              isSaving ||
+              props?.screen?.ScreenName == screenInfo?.name
+            }
             className="max-sm:flex-1  min-w-[15rem]"
             onClick={() => handleSubmit(screenInfo)}
           >
