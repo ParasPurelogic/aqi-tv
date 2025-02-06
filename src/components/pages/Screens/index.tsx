@@ -182,7 +182,7 @@ const Index = (props: Props) => {
           }
           disabled={screens.length == 0}
         >
-          {typeof flags.selectedScreens != "undefined" && (
+          {typeof flags.selectedScreens == "undefined" && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -200,7 +200,7 @@ const Index = (props: Props) => {
 
           <span
             className={cn(
-              typeof flags.selectedScreens != "undefined" && "max-sm:hidden"
+              typeof flags.selectedScreens == "undefined" && "max-sm:hidden"
             )}
           >
             {typeof flags.selectedScreens == "undefined"
