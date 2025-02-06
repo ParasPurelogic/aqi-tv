@@ -14,14 +14,14 @@ type Props = {
 };
 
 const listCSS =
-  "max-w-full w-full grid grid-cols-2 md:grid-cols-[auto_20rem_35rem_auto] items-center justify-around gap-[3rem_2rem] md:gap-[2rem] border-b first:border-t p-[1.5rem] sm:p-[2rem]";
+  "max-w-full w-full grid grid-cols-2 md:grid-cols-[4rem_20rem_32rem_auto] items-center justify-around gap-[3rem_2rem] md:gap-[2rem] border-b first:border-t p-[1.5rem] sm:p-[2rem]";
 
 const Index = (props: Props) => {
   // Router
   const router = useRouter();
 
   // Assigned Playlist
-  const [assignedPlaylist, setAssignedPlaylist] = useState(
+  const [assignedPlaylistId, setAssignedPlaylistId] = useState(
     props?.screen?.playlists?.find((p) =>
       p?.assign_tvscreens?.some((s) => s?.screen_id == props?.screen.id)
     )?.id
@@ -107,17 +107,22 @@ const Index = (props: Props) => {
         {/* Content */}
         <div className="content w-full h-[5rem] grow overflow-y-auto m-[2rem_0_5rem] md:text-[1.8rem] text-title [&_.label]:text-para [&_.label]:text-[1.1rem] sm:[&_.label]:text-[1.3rem] [&_.label]:mb-[0.2rem] md:[&_.label]:hidden">
           {/* Header */}
-          <div className={cn(listCSS)}>
-            <span className="label">S. No.</span>
-            <span className="label">Playlist Name</span>
-            <span className="label">Assigned on screens</span>
-            <span className="label">Actions</span>
+          <div
+            className={cn(
+              "text-[1.5rem] text-para max-md:hidden leading-[1] !pt-[0.2rem] !border-t-0",
+              listCSS
+            )}
+          >
+            <span>S. No.</span>
+            <span>Playlist Name</span>
+            <span>Assigned on screens</span>
+            <span className="w-[28rem] xl:w-[31rem]">Actions</span>
           </div>
 
           {/* List */}
           {props?.screen?.playlists?.map((playlist, i) => {
             // Is assigned
-            const isAssigned = assignedPlaylist == playlist.id;
+            const isAssigned = assignedPlaylistId == playlist.id;
 
             // Return JSX
             return (
@@ -226,7 +231,7 @@ const Index = (props: Props) => {
 
                   {/* Assign/Unassign */}
                   <Button
-                    onClick={() => setAssignedPlaylist(playlist.id)}
+                    onClick={() => setAssignedPlaylistId(playlist.id)}
                     className={cn(
                       "rounded-[3em] gap-[0.3em] md:gap-[0.5em] md:w-[13rem] p-[0.4em_1em] md:p-[0.6em] h-fit",
                       !isAssigned && "bg-white text-primary"
@@ -287,7 +292,18 @@ const Index = (props: Props) => {
           </Button>
 
           {/* Save */}
-          <Button className="max-sm:flex-1 sm:w-[20rem]">Save</Button>
+          <Button
+            disabled={
+              props?.screen?.playlists?.find((p) =>
+                p?.assign_tvscreens?.some(
+                  (s) => s?.screen_id == props?.screen.id
+                )
+              )?.id == assignedPlaylistId
+            }
+            className="max-sm:flex-1 sm:w-[20rem]"
+          >
+            Save
+          </Button>
         </div>
       </div>
     </Page>
