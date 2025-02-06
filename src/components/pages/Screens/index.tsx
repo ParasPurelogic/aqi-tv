@@ -182,20 +182,27 @@ const Index = (props: Props) => {
           }
           disabled={screens.length == 0}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="aspect-square min-w-[2rem] max-w-[2rem]"
-            viewBox="0 0 24 24"
+          {typeof flags.selectedScreens != "undefined" && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="aspect-square min-w-[2rem] max-w-[2rem]"
+              viewBox="0 0 24 24"
+            >
+              <path stroke="none" d="M0 0h24v24H0z"></path>
+              <path d="M12 16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7M7 20h5M9 16v4M17.001 19a2 2 0 1 0 4 0 2 2 0 1 0-4 0M19.001 15.5V17M19.001 21v1.5M22.032 17.25l-1.299.75M17.27 20l-1.3.75M15.97 17.25l1.3.75M20.733 20l1.3.75"></path>
+            </svg>
+          )}
+
+          <span
+            className={cn(
+              typeof flags.selectedScreens != "undefined" && "max-sm:hidden"
+            )}
           >
-            <path stroke="none" d="M0 0h24v24H0z"></path>
-            <path d="M12 16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7M7 20h5M9 16v4M17.001 19a2 2 0 1 0 4 0 2 2 0 1 0-4 0M19.001 15.5V17M19.001 21v1.5M22.032 17.25l-1.299.75M17.27 20l-1.3.75M15.97 17.25l1.3.75M20.733 20l1.3.75"></path>
-          </svg>
-          <span className="max-sm:hidden">
             {typeof flags.selectedScreens == "undefined"
               ? "Manage Screens"
               : "Cancel"}
