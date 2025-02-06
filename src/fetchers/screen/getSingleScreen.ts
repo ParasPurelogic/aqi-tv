@@ -1,5 +1,5 @@
-import parseResponse from "../parseResponse"
 import { FNGetSingleScreen } from "../type"
+import getAllPlaylist from "./getAllPlaylist"
 import getAllScreens from "./getAllScreens"
 
 type Args = {
@@ -18,52 +18,50 @@ const getSingleScreen = async (args: Args): Promise<FNGetSingleScreen | undefine
         // Run onFetching FN
         args?.onFetching?.();
 
-        // Get asked screen
-        const screen = (await getAllScreens({
-            options: {
-                token: args.options.token ?? ""
-            },
-            onError: err => {
-                throw new Error(err)
-            }
-        }))?.find(s => s.id == args.options.screenId);
+        // Fetch screens and playlists
+        const [screens, playlists] = await Promise.all([
+            // Fetch all screens
+            getAllScreens({
+                options: {
+                    token: args.options.token ?? ""
+                },
+                onError: err => {
+                    throw new Error(err);
+                }
+            }),
+            // Fetch all playlists
+            getAllPlaylist({
+                options: {
+                    token: args.options.token ?? ""
+                },
+                onError: err => {
+                    throw new Error(err);
+                }
+            })
+        ]);
+
+        // Find the requested screen
+        const screen = screens?.find(s => s.id == args.options.screenId);
 
         // If screen not found, throw error
         if (!screen?.id) {
-            throw new Error("Invalid screen ID provided")
+            throw new Error("Invalid screen ID provided");
         }
-
-        // Get Playlists
-        const request = await fetch("https://airquality.aqi.in/api/v1/aqi-cloud-tv/GetSingleTvPlaylist", {
-            headers: {
-                authorization: `bearer ${args.options?.token ?? ""}`,
-                id: String(args.options.screenId)
-            },
-            cache: "no-store"
-        });
-
-        // Convert the data
-        const response = await parseResponse<{
-            status: number
-            message: string
-            data?: FNGetSingleScreen["playlists"]
-        }>(request);
 
         // Info
         const info: FNGetSingleScreen = {
             ...screen,
-            playlists: response.data ?? []
-        }
+            playlists,
+        };
 
         // Return response
-        args?.onSuccess?.(info)
-        return info
+        args?.onSuccess?.(info);
+        return info;
 
     } catch (error: any) {
-        args?.onError?.(error.message)
+        args?.onError?.(error.message);
     } finally {
         args?.onFinally?.();
     }
-}
-
+};
 export default getSingleScreen

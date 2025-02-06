@@ -117,6 +117,8 @@ const Index = (props: Props) => {
       toast.success("Selected screen(s) deleted successfully");
       return "Selected screen(s) deleted successfully";
     },
+
+    // eslint-disable-next-line
     []
   );
 

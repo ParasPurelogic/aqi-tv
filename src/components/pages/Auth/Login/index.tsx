@@ -51,8 +51,8 @@ const Index = () => {
     <Page
       name="login"
       className={cn(
-        "login max-w-[400px]",
-        flags.currentScreen == "forget-password" && "max-w-[470px]"
+        "login md:max-w-[400px]",
+        flags.currentScreen == "forget-password" && "md:max-w-[470px]"
       )}
     >
       {/* If Login Screen */}
