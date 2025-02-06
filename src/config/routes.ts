@@ -47,8 +47,8 @@ export const routes = {
     playlistEdit: {
         id: "playlistEdit",
         name: "Edit Playlist",
-        pathname: "/playlist/edit",
-        url: `${domainName}/playlist/edit`
+        pathname: "/playlist/edit?p=playlist_id",
+        url: `${domainName}/playlist/edit?p=playlist_id`
     },
     // Add Playlist
     playlistAdd: {
