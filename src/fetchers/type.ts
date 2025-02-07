@@ -1,9 +1,11 @@
+import { TypeSlide } from "@/types/misc"
+
 // FNGetAllPlaylist
 export type FNGetAllPlaylist = Partial<{
     id: number
     user_id: number
     name: string
-    slides_json: Partial<{ slide_no: number }>[]
+    slides_json: TypeSlide[]
     created_at: string
     updated_at: string
     assign_tvscreens: Partial<{

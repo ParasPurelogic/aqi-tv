@@ -1,31 +1,104 @@
 "use client";
 
 import { Button, Divider, Link, SearchBar } from "@/components/elements";
-import IconInfo from "@/components/misc/IconInfo";
+import IconLoader from "@/components/misc/IconLoader";
 import Page from "@/components/ui/Page";
+import ShowInfo from "@/components/ui/ShowInfo";
 import { routes } from "@/config/routes";
-import { FNGetSingleScreen } from "@/fetchers/type";
+import { useUserInfo } from "@/contexts/UserInfo";
+import assignUnassignPlaylistToScreen from "@/fetchers/screen/assignUnassignPlaylistToScreen";
+import { FNGetAllPlaylist, FNGetSingleScreen } from "@/fetchers/type";
 import cn from "@/utility/cn";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
+import dynamic from "next/dynamic";
+import ShowLoader from "@/components/ui/ShowLoader";
 
 type Props = {
   screen: FNGetSingleScreen;
 };
 
+// AddPlaylistPopup
+const AddPlaylistPopup = dynamic(() => import("./AddPlaylistPopup"), {
+  loading: () => <ShowLoader fullScreen />,
+});
+
+// PlaylistAllScreens
+const PlaylistAllScreens = dynamic(() => import("./PlaylistAllScreens"), {
+  loading: () => <ShowLoader fullScreen />,
+});
+
 const listCSS =
   "max-w-full w-full grid grid-cols-2 md:grid-cols-[4rem_20rem_32rem_auto] items-center justify-around gap-[3rem_2rem] md:gap-[2rem] border-b first:border-t p-[1.5rem] sm:p-[2rem]";
 
 const Index = (props: Props) => {
+  // userinfo
+  const userInfo = useUserInfo();
+
   // Router
   const router = useRouter();
 
-  // Assigned Playlist
-  const [assignedPlaylistId, setAssignedPlaylistId] = useState(
-    props?.screen?.playlists?.find((p) =>
+  // Flags
+  const [flags, setFlags] = useState({
+    playlists: props?.screen?.playlists ?? [],
+    assignedPlaylistId: props?.screen?.playlists?.find((p) =>
       p?.assign_tvscreens?.some((s) => s?.screen_id == props?.screen.id)
-    )?.id
-  );
+    )?.id,
+    showAllScreensListOfPlaylist: undefined as FNGetAllPlaylist[0] | undefined,
+    showAddPlaylistModal: false,
+    isSaving: false,
+  });
+
+  // Handle Save
+  const handleSave = useCallback(async (argFlags: typeof flags) => {
+    try {
+      // Update Flags
+      setFlags((prev) => ({ ...prev, isSaving: true }));
+
+      // Previously Assigned Playlist
+      const previouslyAssignedPlaylist = props?.screen?.playlists?.find((p) =>
+        p?.assign_tvscreens?.some((s) => s?.screen_id == props?.screen.id)
+      )?.id;
+
+      // Save Settings
+      await assignUnassignPlaylistToScreen({
+        options: {
+          screenId: props?.screen?.id ?? 0,
+          token: userInfo?.token ?? "",
+          userId: userInfo?.id ?? 0,
+          playlistId:
+            previouslyAssignedPlaylist && !argFlags.assignedPlaylistId
+              ? previouslyAssignedPlaylist
+              : argFlags.assignedPlaylistId ?? 0,
+          actions:
+            previouslyAssignedPlaylist && !argFlags.assignedPlaylistId
+              ? "unassign"
+              : "assign",
+        },
+        onError: (msg) => {
+          throw new Error(msg);
+        },
+      });
+
+      // Show toast
+      toast.success("Saved Successfully");
+
+      // Reload Page
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+
+      //
+    } catch (error: any) {
+      // Show Error
+      toast.error(error?.message);
+      // Update Flags
+      setFlags((prev) => ({ ...prev, isSaving: false }));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Return JSX
   return (
@@ -83,10 +156,32 @@ const Index = (props: Props) => {
           <div className=""></div>
 
           {/* Search */}
-          <SearchBar className="md:w-[20rem] lg:w-[25rem] 2xl:w-[30rem] max-w-[300px] h-full" />
+          <SearchBar
+            className="md:w-[20rem] lg:w-[25rem] 2xl:w-[30rem] max-w-[300px] h-full"
+            onSearch={(t) =>
+              setFlags((prev) => ({
+                ...prev,
+                playlists:
+                  props?.screen?.playlists?.filter((p) =>
+                    p?.name?.toLowerCase()?.includes(t.toLowerCase())
+                  ) ?? [],
+              }))
+            }
+            onClear={() =>
+              setFlags((prev) => ({
+                ...prev,
+                playlists: props?.screen?.playlists ?? [],
+              }))
+            }
+          />
 
           {/* Create Playlist */}
-          <Button className="md:w-[20rem] lg:w-[25rem] 2xl:w-[30rem] h-full">
+          <Button
+            className="md:w-[20rem] lg:w-[25rem] 2xl:w-[30rem] h-full"
+            onClick={() =>
+              setFlags((prev) => ({ ...prev, showAddPlaylistModal: true }))
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -105,7 +200,15 @@ const Index = (props: Props) => {
         </div>
 
         {/* Content */}
-        <div className="content w-full h-[5rem] grow overflow-y-auto m-[2rem_0_5rem] md:text-[1.8rem] text-title [&_.label]:text-para [&_.label]:text-[1.1rem] sm:[&_.label]:text-[1.3rem] [&_.label]:mb-[0.2rem] md:[&_.label]:hidden">
+        <div className="content min-w-full h-[5rem] grow overflow-y-auto m-[2rem_-2rem_5rem_0] pr-[1.5rem] md:text-[1.8rem] text-title [&_.label]:text-para [&_.label]:text-[1.1rem] sm:[&_.label]:text-[1.3rem] [&_.label]:mb-[0.2rem] md:[&_.label]:hidden">
+          {/* info */}
+          {!flags.assignedPlaylistId && (
+            <ShowInfo
+              className="w-full mb-[2rem]"
+              message="No playlist assigned yet! Assign a playlist to this screen"
+            />
+          )}
+
           {/* Header */}
           <div
             className={cn(
@@ -120,9 +223,9 @@ const Index = (props: Props) => {
           </div>
 
           {/* List */}
-          {props?.screen?.playlists?.map((playlist, i) => {
+          {flags?.playlists?.map((playlist, i) => {
             // Is assigned
-            const isAssigned = assignedPlaylistId == playlist.id;
+            const isAssigned = flags?.assignedPlaylistId == playlist.id;
 
             // Return JSX
             return (
@@ -172,23 +275,44 @@ const Index = (props: Props) => {
                       )}
                       {/* See More */}
                       {(playlist?.assign_tvscreens?.length ?? 0) > 1 && (
-                        <span className="text-primary cursor-pointer transition hover:opacity-70 md:hidden text-[1.4rem]">
+                        <span
+                          className="text-primary cursor-pointer transition hover:opacity-70 md:hidden text-[1.4rem]"
+                          onClick={() =>
+                            setFlags((prev) => ({
+                              ...prev,
+                              showAllScreensListOfPlaylist: playlist,
+                            }))
+                          }
+                        >
                           See More
                         </span>
                       )}
                     </div>
                   </div>
 
-                  {/* Divider */}
-                  <Divider
-                    orientation="vr"
-                    className="h-[5rem] max-md:hidden ml-auto"
-                  />
+                  {/* Divider and See More Button */}
+                  {(playlist.assign_tvscreens?.length ?? 0) > 0 && (
+                    <>
+                      {/* Divider */}
+                      <Divider
+                        orientation="vr"
+                        className="h-[5rem] max-md:hidden ml-auto"
+                      />
 
-                  {/* See More Text */}
-                  <span className="max-md:hidden whitespace-nowrap text-primary cursor-pointer transition hover:opacity-70">
-                    See More
-                  </span>
+                      {/* See More Text */}
+                      <span
+                        className="max-md:hidden whitespace-nowrap text-primary cursor-pointer transition hover:opacity-70"
+                        onClick={() =>
+                          setFlags((prev) => ({
+                            ...prev,
+                            showAllScreensListOfPlaylist: playlist,
+                          }))
+                        }
+                      >
+                        See More
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 {/* Actions */}
@@ -231,7 +355,15 @@ const Index = (props: Props) => {
 
                   {/* Assign/Unassign */}
                   <Button
-                    onClick={() => setAssignedPlaylistId(playlist.id)}
+                    onClick={() =>
+                      setFlags((prev) => ({
+                        ...prev,
+                        assignedPlaylistId:
+                          prev?.assignedPlaylistId == playlist?.id
+                            ? undefined
+                            : playlist.id,
+                      }))
+                    }
                     className={cn(
                       "rounded-[3em] gap-[0.3em] md:gap-[0.5em] md:w-[13rem] p-[0.4em_1em] md:p-[0.6em] h-fit",
                       !isAssigned && "bg-white text-primary"
@@ -287,6 +419,7 @@ const Index = (props: Props) => {
           <Button
             className="max-sm:flex-1 sm:w-[20rem] bg-transparent text-primary"
             onClick={() => router.back()}
+            disabled={flags.isSaving}
           >
             Back
           </Button>
@@ -298,14 +431,47 @@ const Index = (props: Props) => {
                 p?.assign_tvscreens?.some(
                   (s) => s?.screen_id == props?.screen.id
                 )
-              )?.id == assignedPlaylistId
+              )?.id == flags?.assignedPlaylistId || flags.isSaving
             }
             className="max-sm:flex-1 sm:w-[20rem]"
+            onClick={() => handleSave(flags)}
           >
-            Save
+            {flags.isSaving ? <IconLoader /> : "Save"}
           </Button>
         </div>
       </div>
+
+      {/* Add Playlist Modal */}
+      {flags.showAddPlaylistModal && (
+        <AddPlaylistPopup
+          onClose={() =>
+            setFlags((prev) => ({ ...prev, showAddPlaylistModal: false }))
+          }
+          playlists={props?.screen?.playlists ?? []}
+          onSuccess={(playlist) =>
+            setFlags((prev) => ({
+              ...prev,
+              showAddPlaylistModal: false,
+              playlists: playlist
+                ? [...prev.playlists, playlist]
+                : prev.playlists,
+            }))
+          }
+        />
+      )}
+
+      {/* Playlist's All Screen Modal */}
+      {flags.showAllScreensListOfPlaylist && (
+        <PlaylistAllScreens
+          playList={flags.showAllScreensListOfPlaylist}
+          onClose={() =>
+            setFlags((prev) => ({
+              ...prev,
+              showAllScreensListOfPlaylist: undefined,
+            }))
+          }
+        />
+      )}
     </Page>
   );
 };

@@ -51,7 +51,13 @@ const getSingleScreen = async (args: Args): Promise<FNGetSingleScreen | undefine
         // Info
         const info: FNGetSingleScreen = {
             ...screen,
-            playlists,
+            playlists: playlists
+                ? [...playlists].sort((a, b) => {
+                    const aAssigned = a?.assign_tvscreens?.some((s) => s?.screen_id === screen.id) ? 1 : 0;
+                    const bAssigned = b?.assign_tvscreens?.some((s) => s?.screen_id === screen.id) ? 1 : 0;
+                    return bAssigned - aAssigned; // Sorts with assigned playlists first
+                })
+                : [],
         };
 
         // Return response
