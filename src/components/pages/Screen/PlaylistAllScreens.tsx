@@ -29,7 +29,7 @@ const PlaylistAllScreens = (props: Props) => {
       <p className="mb-[1.5rem]">Assigned to: </p>
 
       {/* Screen's*/}
-      <div className="flex max-sm:flex-col flex-wrap gap-[1.5rem]">
+      <div className="grid sm:grid-cols-2 gap-[1.5rem]">
         {props.playList?.assign_tvscreens?.map((screen) => (
           <Link
             key={screen.screen_serialNo}
@@ -37,7 +37,7 @@ const PlaylistAllScreens = (props: Props) => {
               "screenId",
               String(screen?.screen_serialNo + "-" + screen?.screen_id)
             )}
-            className="text-title flex-1 sm:w-fit h-fit relative border text-[1.6rem] leading-[1] p-[0.9em_1.1em] flex items-center gap-[1em] bg-white border-[#E1E7F6] transition hover:border-primary hover:bg-primary/10 rounded-[0.7em] shadow-[2px_5px_20px_0_rgba(0,0,0,0.06)] overflow-hidden"
+            className="text-title flex-1 w-full h-fit relative border text-[1.6rem] leading-[1] p-[0.9em_1.1em] flex items-center gap-[1em] bg-white border-[#E1E7F6] transition hover:border-primary hover:bg-primary/10 rounded-[0.7em] shadow-[2px_5px_20px_0_rgba(0,0,0,0.06)] overflow-hidden"
           >
             {/* Icon */}
             <svg
