@@ -99,7 +99,7 @@ function crashReport(data: Record<string, any>): string {
                   overflow: hidden;
                 }
                 .email-header {
-                  background-color: #4CAF50;
+                  background-color: #f96d6d;
                   color: white;
                   padding: 10px 20px;
                   text-align: center;

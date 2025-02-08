@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import "@/app/globals.css";
 import ErrorIcon from "../misc/ErrorIcon";
+import { isSiteLive } from "@/config/misc";
 
 export default function GlobalError({
   error,
@@ -57,7 +58,12 @@ export default function GlobalError({
   // Send Report on pressing "Enter Key"
   useEffect(() => {
     // Call handleSendReport
-    if (!error?.message?.toLowerCase()?.includes("loading chunk")) {
+    if (
+      isSiteLive &&
+      !error?.message?.toLowerCase()?.includes("loading chunk") &&
+      !error?.message?.toLowerCase()?.includes("appendchild") &&
+      !error?.message?.toLowerCase()?.includes("load fail")
+    ) {
       handleSendReport(true);
     }
 
