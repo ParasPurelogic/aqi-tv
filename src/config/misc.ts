@@ -2,7 +2,7 @@
 export const conventions = {
   cookie: {
     getCookieLife: () => new Date(Date.now() + 150 * 24 * 60 * 60 * 1000),
-    userInfo: "aqi_au_sakdosj98h",
+    userInfo: "aqi_tu_sakdosj98h",
   },
   query: {
   },
