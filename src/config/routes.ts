@@ -1,4 +1,4 @@
-import { domainName } from "./misc";
+import { conventions, domainName } from "./misc";
 
 export const routes = {
     // Home
@@ -47,8 +47,8 @@ export const routes = {
     playlistEdit: {
         id: "playlistEdit",
         name: "Edit Playlist",
-        pathname: "/playlist/edit?p=playlist_id",
-        url: `${domainName}/playlist/edit?p=playlist_id`
+        pathname: `/playlist/edit?${conventions.query.editPlaylistId}=playlist_id`,
+        url: `${domainName}/playlist/edit?${conventions.query.editPlaylistId}=playlist_id`
     },
     // Add Playlist
     playlistAdd: {

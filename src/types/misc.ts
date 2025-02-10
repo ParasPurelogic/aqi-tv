@@ -5,7 +5,7 @@ export type TypeSlide = Partial<
         slide_name: string
         widgets: TypeWidget[]
     }
->[]
+>
 
 // Widget
 export type TypeWidget = Partial<{

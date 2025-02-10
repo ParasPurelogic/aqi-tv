@@ -9,11 +9,12 @@ import { useUserInfo } from "@/contexts/UserInfo";
 import assignUnassignPlaylistToScreen from "@/fetchers/screen/assignUnassignPlaylistToScreen";
 import { FNGetAllPlaylist, FNGetSingleScreen } from "@/fetchers/type";
 import cn from "@/utility/cn";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
 import ShowLoader from "@/components/ui/ShowLoader";
+import BackButton from "./BackButton";
+import { useRouter } from "next/navigation";
 
 type Props = {
   screen: FNGetSingleScreen;
@@ -24,10 +25,13 @@ const AddPlaylistPopup = dynamic(() => import("./AddPlaylistPopup"), {
   loading: () => <ShowLoader fullScreen />,
 });
 
-// PlaylistAllScreens
-const PlaylistAllScreens = dynamic(() => import("./PlaylistAllScreens"), {
-  loading: () => <ShowLoader fullScreen />,
-});
+// PlaylistAllAssignedScreens
+const PlaylistAllAssignedScreens = dynamic(
+  () => import("./PlaylistAllAssignedScreens"),
+  {
+    loading: () => <ShowLoader fullScreen />,
+  }
+);
 
 const listCSS =
   "max-w-full w-full grid grid-cols-2 md:grid-cols-[4rem_20rem_32rem_auto] items-center justify-around gap-[3rem_2rem] md:gap-[2rem] border-b first:border-t p-[1.5rem] sm:p-[2rem]";
@@ -106,25 +110,7 @@ const Index = (props: Props) => {
       {/* Header */}
       <div className="bg-[#F2F5FF] p-[2rem_var(--body-padding)] w-full flex sm:items-center gap-[2.5rem]">
         {/* Back BTN */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="transition aspect-square w-[3.5rem] h-fit hover:opacity-70 cursor-pointer"
-          fill="none"
-          viewBox="0 0 39 39"
-          onClick={() => router.back()}
-        >
-          <rect
-            width="38.943"
-            height="38.943"
-            fill="#31343D"
-            rx="19.472"
-            transform="matrix(-1 0 0 1 38.943 0)"
-          ></rect>
-          <path
-            fill="#fff"
-            d="M27 18.428a.88.88 0 1 1 0 1.76zM11.375 19.93a.88.88 0 0 1 0-1.244l5.6-5.602a.88.88 0 1 1 1.245 1.245l-4.978 4.979 4.978 4.979a.88.88 0 1 1-1.244 1.244zM27 20.188H11.997v-1.76H27z"
-          ></path>
-        </svg>
+        <BackButton />
 
         {/* Name */}
         <p className="text-title text-[2rem] sm:text-[2.2rem] -ml-[0.5rem] flex flex-col gap-[0.2rem]">
@@ -462,7 +448,7 @@ const Index = (props: Props) => {
 
       {/* Playlist's All Screen Modal */}
       {flags.showAllScreensListOfPlaylist && (
-        <PlaylistAllScreens
+        <PlaylistAllAssignedScreens
           playList={flags.showAllScreensListOfPlaylist}
           onClose={() =>
             setFlags((prev) => ({

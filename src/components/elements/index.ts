@@ -13,6 +13,7 @@ import InputNumber from './_elements/InputNumber';
 import Link from './_elements/Link';
 import SearchBar from './_elements/SearchBar';
 import InputOTP from './_elements/InputOTP';
+import InputCounter from './_elements/InputCounter';
 
 export {
     Button,
@@ -30,4 +31,5 @@ export {
     InputNumber,
     InputToggle,
     InputOTP,
+    InputCounter,
 }

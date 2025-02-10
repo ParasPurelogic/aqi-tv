@@ -5,6 +5,7 @@ export const conventions = {
     userInfo: "aqi_tv_u_sakdosj98h",
   },
   query: {
+    editPlaylistId: "p",
   },
   header: {
   },
