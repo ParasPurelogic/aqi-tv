@@ -3,6 +3,7 @@ import Header from "../Header";
 import Sidebar from "../Sidebar";
 import { Button, InputCounter, InputText } from "@/components/elements";
 import { useState } from "react";
+import SlidesStep from "../ManageSlides/SlidesStep";
 
 type Props = {
   playlist: FNGetAllPlaylist[0];
@@ -12,7 +13,18 @@ type Props = {
 
 const Index = (props: Props) => {
   // Playlist
-  const [playlist, setPlaylist] = useState(props.playlist ?? {});
+  const [playlist, setPlaylist] = useState<FNGetAllPlaylist[0]>({
+    ...props?.playlist,
+    slides_json: props?.playlist?.slides_json?.length
+      ? props.playlist?.slides_json
+      : [
+          {
+            slide_no: 1,
+            slide_name: "Slide 1 Name",
+            widgets: [],
+          },
+        ],
+  });
 
   // Return JSX
   return (
@@ -26,6 +38,7 @@ const Index = (props: Props) => {
           currentStep="add-slides"
           playlist={playlist}
           className="md:col-start-1 md:col-end-2 md:row-start-1 md:row-end-3"
+          otherSteps={<SlidesStep playlist={playlist} disable />}
         />
 
         {/* Main Content */}
@@ -45,7 +58,10 @@ const Index = (props: Props) => {
                   ...prev,
                   slides_json: Array.from(
                     { length: count },
-                    (_, i) => prev?.slides_json?.[i] ?? {}
+                    (_, i) =>
+                      prev?.slides_json?.[i] ?? {
+                        slide_name: `Slide ${i + 1} Name`,
+                      }
                   ),
                 }))
               }
@@ -90,18 +106,22 @@ const Index = (props: Props) => {
             {/* Save */}
             <Button
               className="max-sm:flex-1 sm:w-[20rem]"
-              disabled={playlist?.slides_json?.some?.((s) => !s?.slide_name)}
+              disabled={
+                playlist?.slides_json?.length == 0 ||
+                playlist?.slides_json?.some?.((s) => !s?.slide_name)
+              }
               onClick={() =>
                 props?.onSave?.({
                   ...playlist,
                   slides_json: playlist?.slides_json?.map((slide, i) => ({
                     ...slide,
-                    slide_no: i,
+                    slide_no: slide?.slide_no ?? i + 1,
+                    widgets: slide?.widgets ?? [],
                   })),
                 })
               }
             >
-              Next
+              Next Step
             </Button>
           </div>
         </div>

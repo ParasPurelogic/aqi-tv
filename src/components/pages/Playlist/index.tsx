@@ -23,11 +23,11 @@ const Playlist = (props: Props) => {
   // Router
   const router = useRouter();
 
-  // Step
-  const [step, setStep] = useState<Step>("manage-slides");
-
-  // Playlist
-  const [playlist, setPlaylist] = useState(props.playlist ?? {});
+  // Flags
+  const [flags, setFlags] = useState({
+    step: "add-slides" as Step,
+    playlist: props?.playlist as FNGetAllPlaylist[0],
+  });
 
   // Return JSX
   return (
@@ -35,24 +35,25 @@ const Playlist = (props: Props) => {
       {/* Wrapper */}
       <div className="wrapper w-full h-full min-h-fit">
         {/* Add Slides Screen */}
-        {step == "add-slides" && (
+        {flags.step == "add-slides" && (
           <AddSlides
-            playlist={playlist}
+            playlist={flags.playlist}
             onBack={() => router?.back()}
-            onSave={(p) => {
-              // Update Playlist
-              setPlaylist(p);
-              // Update step
-              setStep("manage-slides");
-            }}
+            onSave={(p) =>
+              setFlags((prev) => ({
+                ...prev,
+                step: "manage-slides",
+                playlist: p,
+              }))
+            }
           />
         )}
 
         {/* Manage Slides */}
-        {step == "manage-slides" && (
+        {flags.step == "manage-slides" && (
           <ManageSlides
-            playlist={playlist}
-            onBack={() => setStep("add-slides")}
+            playlist={flags.playlist}
+            onBack={() => setFlags((prev) => ({ ...prev, step: "add-slides" }))}
           />
         )}
       </div>

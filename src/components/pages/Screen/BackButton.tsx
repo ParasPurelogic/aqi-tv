@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   className?: string;
+  disable?: boolean;
 };
 
 const BackButton = (props: Props) => {
@@ -21,7 +22,7 @@ const BackButton = (props: Props) => {
       )}
       fill="none"
       viewBox="0 0 39 39"
-      onClick={() => router.back()}
+      onClick={() => !props?.disable && router.back()}
     >
       <rect
         width="38.943"

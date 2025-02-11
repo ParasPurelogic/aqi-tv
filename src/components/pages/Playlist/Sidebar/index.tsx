@@ -33,7 +33,7 @@ const Sidebar = (props: Props) => {
   return (
     <div
       className={cn(
-        "md:bg-[#F2F5FF] flex flex-col w-full md:max-w-[200px] xl:max-w-[300px] h-full py-body md:p-[4rem] lg:p-[5rem] xl:p-[6rem] md:border-r min-w-0",
+        "md:bg-[#F2F5FF] flex flex-col w-full md:max-w-[200px] xl:max-w-[250px] h-full py-body md:p-[4rem] lg:p-[5rem] xl:p-[6rem] md:border-r min-w-0",
         props.className
       )}
     >

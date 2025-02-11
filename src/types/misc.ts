@@ -11,6 +11,8 @@ export type TypeSlide = Partial<
 export type TypeWidget = Partial<{
     widget_id: number
     widget_name: string
+    previewIcon: string
+    previewScreen: string
 }>
 
 // Action

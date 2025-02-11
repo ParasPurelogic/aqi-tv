@@ -10,7 +10,8 @@ const NoScreens = (props: Props) => {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center max-w-[290px] text-title text-center my-[7rem]"
+        "flex flex-col items-center justify-center max-w-[290px] text-title text-center my-[7rem]",
+        props.className
       )}
     >
       {/* Icon */}

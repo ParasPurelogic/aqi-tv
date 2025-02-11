@@ -6,7 +6,7 @@ type props = {
   isCurrentStep: boolean;
   isPreviousStep: boolean;
   className?: string;
-  name: string;
+  name: string | React.ReactNode;
   subName?: string;
   onClick?: () => void;
 };
