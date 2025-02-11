@@ -83,7 +83,7 @@ const SlidesStep = (props: Props) => {
               />
 
               {/* Text */}
-              <span className="md:hidden truncate">
+              <span className="md:hidden truncate max-w-[20rem]">
                 {slide?.slide_name ?? ""}
               </span>
             </Button>

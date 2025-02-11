@@ -135,7 +135,7 @@ const Index = (props: Props) => {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col h-[20rem] grow p-body pt-0">
+      <div className="flex flex-col h-[50rem] grow p-body pt-0">
         {/* Header */}
         <div className="grid grid-cols-[1fr_auto_auto] items-center gap-[1.5rem] py-[2rem] border-b border-black/[14%]">
           {/* Entries */}
@@ -186,7 +186,7 @@ const Index = (props: Props) => {
         </div>
 
         {/* Content */}
-        <div className="content min-w-full h-[5rem] grow overflow-y-auto m-[2rem_-2rem_5rem_0] pr-[1.5rem] md:text-[1.8rem] text-title [&_.label]:text-para [&_.label]:text-[1.1rem] sm:[&_.label]:text-[1.3rem] [&_.label]:mb-[0.2rem] md:[&_.label]:hidden">
+        <div className="content min-w-full h-[10rem] grow overflow-y-auto m-[2rem_-2rem_5rem_0] pr-[1.5rem] md:text-[1.8rem] text-title [&_.label]:text-para [&_.label]:text-[1.1rem] sm:[&_.label]:text-[1.3rem] [&_.label]:mb-[0.2rem] md:[&_.label]:hidden">
           {/* info */}
           {!flags.assignedPlaylistId && (
             <ShowInfo
