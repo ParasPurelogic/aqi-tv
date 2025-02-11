@@ -16,7 +16,7 @@ const BackButton = (props: Props) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
-        "transition aspect-square min-w-[3.5rem] max-w-[3.5] h-fit hover:opacity-70 cursor-pointer",
+        "transition aspect-square min-w-[3.5rem] max-w-[3.5rem] h-fit hover:opacity-70 cursor-pointer",
         props.className
       )}
       fill="none"
