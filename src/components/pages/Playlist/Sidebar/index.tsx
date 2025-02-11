@@ -33,7 +33,7 @@ const Sidebar = (props: Props) => {
   return (
     <div
       className={cn(
-        "md:bg-[#F2F5FF] flex w-full md:max-w-[200px] xl:max-w-[300px] h-full py-body md:p-[4rem] lg:p-[5rem] xl:p-[6rem] md:border-r min-w-0",
+        "md:bg-[#F2F5FF] flex flex-col w-full md:max-w-[200px] xl:max-w-[300px] h-full py-body md:p-[4rem] lg:p-[5rem] xl:p-[6rem] md:border-r min-w-0",
         props.className
       )}
     >
@@ -48,7 +48,12 @@ const Sidebar = (props: Props) => {
           return (
             <StepComp
               key={index}
-              className={cn("max-md:flex-1", index != 2 && "md:h-[13rem]")}
+              className={cn(
+                "max-md:flex-1",
+                index != 2 && "md:h-[13rem]",
+                index == 0 && "[&_.point]:before:hidden",
+                index == 2 && "[&_.point]:after:hidden"
+              )}
               isCurrentStep={step.id == props.currentStep}
               isPreviousStep={index < currentStepIndex}
               name={step.name}
@@ -62,10 +67,10 @@ const Sidebar = (props: Props) => {
             />
           );
         })}
-
-        {/* Other Steps */}
-        {props?.otherSteps}
       </div>
+
+      {/* Other Steps */}
+      {props?.otherSteps}
     </div>
   );
 };

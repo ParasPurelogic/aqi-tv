@@ -1,7 +1,7 @@
 // Slide
 export type TypeSlide = Partial<
     {
-        slide_id: number
+        slide_no: number
         slide_name: string
         widgets: TypeWidget[]
     }

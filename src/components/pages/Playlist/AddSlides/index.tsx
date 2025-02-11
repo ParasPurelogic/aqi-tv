@@ -91,7 +91,15 @@ const Index = (props: Props) => {
             <Button
               className="max-sm:flex-1 sm:w-[20rem]"
               disabled={playlist?.slides_json?.some?.((s) => !s?.slide_name)}
-              onClick={() => props?.onSave?.(playlist)}
+              onClick={() =>
+                props?.onSave?.({
+                  ...playlist,
+                  slides_json: playlist?.slides_json?.map((slide, i) => ({
+                    ...slide,
+                    slide_no: i,
+                  })),
+                })
+              }
             >
               Next
             </Button>

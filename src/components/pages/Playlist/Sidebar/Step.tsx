@@ -3,12 +3,12 @@
 import cn from "@/utility/cn";
 
 type props = {
-  playlist?: { name?: string; slides_json?: any[] };
   isCurrentStep: boolean;
   isPreviousStep: boolean;
   className?: string;
   name: string;
   subName?: string;
+  onClick?: () => void;
 };
 
 const Step: React.FC<props> = ({
@@ -17,6 +17,7 @@ const Step: React.FC<props> = ({
   name,
   subName,
   className,
+  onClick,
 }) => {
   // Return JSX
   return (
@@ -26,11 +27,12 @@ const Step: React.FC<props> = ({
         (isPreviousStep || isCurrentStep) && "text-primary",
         className
       )}
+      onClick={onClick}
     >
       {/* Point */}
       <div
         className={cn(
-          "point shadow-[inset_0_0_0_3px_currentColor] max-w-[2rem] min-w-[2rem] h-[2rem] rounded-full relative flex transition last:after:hidden first:before:hidden",
+          "point shadow-[inset_0_0_0_3px_currentColor] max-w-[2rem] min-w-[2rem] h-[2rem] rounded-full relative flex transition",
           isPreviousStep && "bg-current",
           isCurrentStep && "shadow-[inset_0_0_0_0.6rem_currentColor] bg-white",
           "after:content-[''] after:absolute before:content-[''] before:absolute after:bg-current before:bg-current",
@@ -65,7 +67,7 @@ const Step: React.FC<props> = ({
       {/* Text */}
       <span
         className={cn(
-          "truncate text-title/50 max-w-full flex flex-col max-md:items-center max-md:justify-center gap-[0.3em] md:gap-[0.5em] md:translate-y-[0.2em] max-md:px-[1rem]",
+          "truncate text-title/50 max-w-full flex flex-col max-md:items-center max-md:justify-center gap-[0.3em] md:gap-[0.5em] md:translate-y-[0.2em] max-md:px-[1.5rem]",
           (isCurrentStep || isPreviousStep) && "text-title"
         )}
       >
