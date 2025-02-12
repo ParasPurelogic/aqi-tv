@@ -4,6 +4,7 @@ import { Button, InputText } from "@/components/elements";
 import IconLoader from "@/components/misc/IconLoader";
 import Popup from "@/components/ui/Popup";
 import { regexChecks } from "@/config/misc";
+import { routes } from "@/config/routes";
 import { useUserInfo } from "@/contexts/UserInfo";
 import createUpdatePlaylist from "@/fetchers/screen/createUpdatePlaylist";
 import { FNGetAllPlaylist } from "@/fetchers/type";
@@ -13,7 +14,6 @@ import { toast } from "sonner";
 type Props = {
   onClose?: () => void;
   playlists: FNGetAllPlaylist;
-  onSuccess: (d: FNGetAllPlaylist[0] | undefined) => void;
 };
 
 const AddPlaylistPopup = (props: Props) => {
@@ -62,10 +62,13 @@ const AddPlaylistPopup = (props: Props) => {
       // Show Success
       toast.success("Playlist created successfully");
 
-      // Run props.onClose
-      props?.onClose?.();
-      // Run props.onSuccess
-      props?.onSuccess?.(createdPlaylist);
+      // Redirect to edit playlist page
+      if (typeof window !== "undefined") {
+        window.location.href = routes.playlistEdit.url.replace(
+          "playlist_id",
+          String(createdPlaylist?.id)
+        );
+      }
 
       //
     } catch (error: any) {

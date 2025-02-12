@@ -2,7 +2,7 @@ import { FNGetAllPlaylist } from "@/fetchers/type";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 import { Button } from "@/components/elements";
-import { Fragment, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 import NoScreens from "@/components/pages/pageCommons/NoScreens";
 import { TypeSlide, TypeWidget } from "@/types/misc";
@@ -12,8 +12,8 @@ import IconLoader from "@/components/misc/IconLoader";
 import Image from "next/image";
 import createUpdatePlaylist from "@/fetchers/screen/createUpdatePlaylist";
 import { useUserInfo } from "@/contexts/UserInfo";
-import { routes } from "@/config/routes";
 import SlidesStep from "./SlidesStep";
+import type WidgetSettingComp from "./Widgets/1";
 
 type Props = {
   playlist: FNGetAllPlaylist[0];
@@ -102,9 +102,9 @@ const Index = (props: Props) => {
         onSuccess: () => {
           // Show Success
           toast.success("Playlist saved successfully.");
-          // Redirect to manage playlist page
+          // Go back in page history
           if (typeof window !== "undefined") {
-            window.location.href = routes.playlist.url;
+            window.history.back();
           }
         },
       });
@@ -188,18 +188,16 @@ const Index = (props: Props) => {
           {/* Content */}
           <div className="w-full mb-auto flex flex-col grow min-h-fit">
             {[1].map((l) => {
-              // Does selected slide have widgets
-              const doesSelectedSlideHasWidget =
-                !!flags.selectedSlide?.widgets?.length;
+              // Widgets
+              const widgets = flags.selectedSlide?.widgets ?? [];
 
-              // Does selected slide has any selected widget
-              const doesSelectedSlideHasSelectedWidget =
-                flags.selectedSlide?.widgets?.some(
-                  (w) => w?.isSelected == true
-                );
+              // Selected Widget
+              const selectedWidget = flags.selectedSlide?.widgets?.find(
+                (w) => w?.isSelected
+              );
 
               //  If selected slide has no widget
-              if (!doesSelectedSlideHasWidget) {
+              if (!widgets.length) {
                 return (
                   <NoScreens
                     key={l}
@@ -211,10 +209,7 @@ const Index = (props: Props) => {
               }
 
               // If selected slide has widgets, but no widget is selected
-              if (
-                doesSelectedSlideHasWidget &&
-                !doesSelectedSlideHasSelectedWidget
-              ) {
+              if (!selectedWidget?.widget_id) {
                 return (
                   <NoScreens
                     key={l}
@@ -225,11 +220,54 @@ const Index = (props: Props) => {
                 );
               }
 
+              // Get Widget Setting Comp.
+              // @ts-expect-error type
+              const WidgetSettings: typeof WidgetSettingComp = dynamic(
+                () => import(`./Widgets/${selectedWidget.widget_id}`),
+                {
+                  loading: () => <ShowLoader fullScreen />,
+                  ssr: false,
+                }
+              );
+
               // Else
               return (
-                <Fragment key={l}>
-                  {JSON.stringify(flags.selectedSlide)}
-                </Fragment>
+                <WidgetSettings
+                  widget={selectedWidget}
+                  key={l}
+                  onSave={(modifiedWidget) => {
+                    // Widgets
+                    const widgets = flags.selectedSlide?.widgets ?? [];
+
+                    // Get modifiedWidget index
+                    const modifiedWidgetIndex = widgets?.findIndex(
+                      (w) => w?.widget_id == modifiedWidget?.widget_id
+                    );
+
+                    // Push the widget at selected index
+                    widgets[modifiedWidgetIndex] = modifiedWidget;
+
+                    // Selected Slide
+                    const newSelectedSlide: Slide = {
+                      ...flags.selectedSlide,
+                      widgets: widgets,
+                    };
+
+                    // Update Flags
+                    setFlags((prev) => ({
+                      ...prev,
+                      selectedSlide: newSelectedSlide,
+                      playlist: {
+                        ...prev.playlist,
+                        slides_json: prev.playlist?.slides_json?.map((s) =>
+                          s?.slide_no == newSelectedSlide?.slide_no
+                            ? newSelectedSlide
+                            : s
+                        ),
+                      },
+                    }));
+                  }}
+                />
               );
             })}
           </div>

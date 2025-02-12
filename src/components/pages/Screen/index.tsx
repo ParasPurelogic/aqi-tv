@@ -434,15 +434,6 @@ const Index = (props: Props) => {
             setFlags((prev) => ({ ...prev, showAddPlaylistModal: false }))
           }
           playlists={props?.screen?.playlists ?? []}
-          onSuccess={(playlist) =>
-            setFlags((prev) => ({
-              ...prev,
-              showAddPlaylistModal: false,
-              playlists: playlist
-                ? [...prev.playlists, playlist]
-                : prev.playlists,
-            }))
-          }
         />
       )}
 

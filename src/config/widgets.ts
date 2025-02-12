@@ -7,6 +7,12 @@ const widgets: TypeWidget[] = [
         widget_name: "Simple Image",
         previewIcon: `${domainName}/media/widgets/1-icon.png`,
         previewScreen: `${domainName}/media/widgets/1-screen.png`,
+    },
+    {
+        widget_id: 2,
+        widget_name: "Simple Image 2",
+        previewIcon: `${domainName}/media/widgets/1-icon.png`,
+        previewScreen: `${domainName}/media/widgets/1-screen.png`,
     }
 ];
 

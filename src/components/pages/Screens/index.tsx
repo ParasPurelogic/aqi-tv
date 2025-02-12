@@ -341,6 +341,7 @@ const Index = (props: Props) => {
             return (
               <NoScreens
                 key={i}
+                className="h-full"
                 title="No Screen Available!"
                 subTitle={
                   flags.selectedFilter.id != "default" || flags.searchedTerm
